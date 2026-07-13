@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosana De Luca | Business English Coach</title>
+    <!-- Google Fonts: Oswald (Títulos) Inter (Cuerpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: '#146EE6',     /* Azul Oficial del manual de marca */
+                        brandGray: '#828282',     /* Gris Oficial del manual de marca */
+                        brandDark: '#1E293B',     /* Slate oscuro para textos de alta jerarquía */
+                        brandLight: '#F8FAFC',    /* Fondo limpio */
+                        mpBlue: '#009ee3',        /* Celeste oficial de Mercado Pago */
+                        mpBlueDark: '#0081bb'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        title: ['Oswald', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- ==========================================
+         ESTILOS
+         ========================================== -->
+    <style>
+        h1, h2, h3, h4, h5, .nav-title, .font-title {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .volanta {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Blueprint */
+        .wireframe-bg {
+            background-image: 
+                linear-gradient(rgba(20, 110, 230, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(20, 110, 230, 0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Animación */
+        @keyframes scaleUp {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .animate-scaleUp {
+            animation: scaleUp 0.2s ease-out forwards;
+        }
+
+        /* Estilos interactivos del calendario de reservas */
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+        .calendar-day:not([disabled]):hover {
+            background-color: rgba(20, 110, 230, 0.1);
+            color: #146EE6;
+        }
+        .calendar-day.selected {
+            background-color: #146EE6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-brandDark wireframe-bg min-h-screen flex flex-col justify-between">
+
+    <!-- ==========================================
+         1. HEADER
+         ========================================== -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logotipo e Identidad -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 border-2 border-brandBlue rounded-full rounded-br-none flex items-center justify-center text-brandBlue font-bold text-lg">
+                        <i class="fa-regular fa-comments"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold text-brandDark tracking-wide leading-none uppercase font-title">
+                            Rosana <span class="text-brandBlue">De Luca</span>
+                        </span>
+                        <span class="text-[10px] text-brandGray tracking-widest font-title mt-1">
+                            Business English Coach
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Menú de navegación Desktop -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#metodo" class="text-sm font-medium text-brandDark hover:text-brandBlue transition-colors">El Método</a>
+                    <a href="#bio" class="text-sm font-medium text-brandDark hover:text-brandBlue transition-colors">Sobre la Coach</a>
+                    <a href="#testimonios" class="text-sm font-medium text-brandDark hover:text-brandBlue transition-colors">Testimonios</a>
+                    <a href="#reservas" class="text-sm font-medium text-brandDark hover:text-brandBlue transition-colors">Reservas &amp; Planes</a>
+                    <a href="#contacto" class="text-sm font-medium text-brandDark hover:text-brandBlue transition-colors">Contacto</a>
+                </nav>
+
+                <!-- CTA -->
+                <div class="hidden md:block">
+                    <a href="#reservas" class="inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold tracking-wider text-white bg-brandBlue hover:bg-blue-600 rounded-md transition-all uppercase font-title shadow-md shadow-brandBlue/10 hover:shadow-lg">
+                        Clase de Diagnóstico <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Botón de Menú Móvil -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md text-brandDark hover:bg-slate-100 transition-colors">
+                    <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-6 space-y-3 transition-all">
+            <a href="#metodo" class="block py-2 text-base font-medium text-brandDark hover:text-brandBlue border-b border-slate-50">El Método</a>
+            <a href="#bio" class="block py-2 text-base font-medium text-brandDark hover:text-brandBlue border-b border-slate-50">Sobre la Coach</a>
+            <a href="#testimonios" class="block py-2 text-base font-medium text-brandDark hover:text-brandBlue border-b border-slate-50">Testimonios</a>
+            <a href="#reservas" class="block py-2 text-base font-medium text-brandDark hover:text-brandBlue border-b border-slate-50">Reservas &amp; Planes</a>
+            <a href="#contacto" class="block py-2 text-base font-medium text-brandDark hover:text-brandBlue">Contacto</a>
+            <a href="#reservas" class="block w-full text-center py-3 text-sm font-semibold text-white bg-brandBlue rounded-md font-title uppercase">
+                Reservar Diagnóstico Gratis
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- ==========================================
+             2. HERO SECTION
+             ========================================== -->
+        <section class="relative bg-white py-12 lg:py-24 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left z-10">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-brandBlue text-xs font-semibold uppercase tracking-wider">
+                            <span class="w-2 h-2 rounded-full bg-brandBlue animate-pulse"></span> Programa 100% adaptado a tus necesidades
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brandDark !leading-[5rem] uppercase font-title">
+                            <!--Transformá el inglés en una <span class="text-brandBlue">herramienta de crecimiento</span> profesional y aprendizaje continuo-->
+                            Potenciá tu carrera y aprendizaje <span class="text-brandBlue">a través del inglés</span>
+                        </h1>
+                        <p class="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                            No enseño inglés general. Diseño <b> aprendizaje a medida </b>para optimizar tu perfil global con el respaldo de más de 28 años de experiencia internacional para quienes no tienen tiempo que perder.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                            <a href="#reservas" class="inline-flex items-center justify-center px-8 py-4 text-sm font-bold text-white bg-brandBlue hover:bg-blue-600 rounded-md transition-all uppercase font-title shadow-lg shadow-brandBlue/20">
+                                Agendá una entrevista inicial <i class="fa-solid fa-calendar-check ml-2"></i>
+                            </a>
+                            <a href="#metodo" class="inline-flex items-center justify-center px-8 py-4 text-sm font-bold text-brandDark hover:text-brandBlue bg-slate-100 hover:bg-slate-200 rounded-md transition-all uppercase font-title">
+                                Descubrí mi método
+                            </a>
+                        </div>
+                        <!-- Métricas Rápidas -->
+                        <div class="grid grid-cols-3 gap-6 pt-8 border-t border-slate-100">
+                            <div>
+                                <span class="block text-3xl font-bold text-brandBlue font-title">+28 Años</span>
+                                <span class="text-xs text-brandGray">De experiencia internacional</span>
+                            </div>
+                            <div>
+                                <span class="block text-3xl font-bold text-brandBlue font-title">100%</span>
+                                <span class="text-xs text-brandGray">personalizado</span>
+                            </div>
+                            <div>
+                                <span class="block text-3xl font-bold text-brandBlue font-title">Simulaciones</span>
+                                <span class="text-xs text-brandGray">De casos reales para practicar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Imagen Hero -->
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative mx-auto max-w-md lg:max-w-none">
+                            <div class="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-brandBlue"></div>
+                            <div class="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-brandBlue"></div>
+                            <div class="absolute inset-0 bg-brandBlue/5 rounded-lg transform translate-x-3 translate-y-3 -z-10"></div>
+                            
+                            <div class="overflow-hidden rounded-lg shadow-2xl border border-slate-200 bg-white">
+                                <img src="./img/1.jpeg" alt="Reunión ejecutiva corporativa" class="w-full h-auto object-cover aspect-[4/3] lg:aspect-square hover:scale-105 transition-transform duration-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             3. METODOLOGÍA (EL MÉTODO)
+             ========================================== -->
+    <section id="metodo" class="py-20 bg-slate-50">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="volanta text-base text-brandBlue font-bold tracking-wider uppercase">El Método</h2>
+                <h3 class="font-title text-3xl font-bold text-brandDark mb-4 uppercase">Aprendizaje a Medida, Resultados Reales</h3>
+                <p class="text-base text-slate-600 font-light">
+                    No trabajo con cursos estandarizados. Diseño cada proceso de aprendizaje basándome en tu perfil, tus desafíos profesionales y tus objetivos concretos.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Pilar 1 -->
+                <div class="p-6 rounded-xl bg-white border border-slate-200/60 transition-all hover:shadow-md">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-brandBlue mb-4 text-lg">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+                    <h4 class="font-bold text-brandDark mb-2 text-base uppercase font-title">Recursos Auténticos</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed font-light">
+                        Trabajamos con artículos internacionales, casos de empresas, podcasts y publicaciones académicas reales, seleccionados específicamente para tu sector.
+                    </p>
+                </div>
+                <!-- Pilar 2 -->
+                <div class="p-6 rounded-xl bg-white border border-slate-200/60 transition-all hover:shadow-md">
+                    <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600 mb-4 text-lg">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <h4 class="font-bold text-brandDark mb-2 text-base uppercase font-title">Simulaciones de Impacto</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed font-light">
+                        Entrenamos con situaciones de alta presión: desde pitches ante inversores y negociaciones críticas hasta la preparación de entrevistas con headhunters.
+                    </p>
+                </div>
+                <!-- Pilar 3 -->
+                <div class="p-6 rounded-xl bg-white border border-slate-200/60 transition-all hover:shadow-md">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 mb-4 text-lg">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h4 class="font-bold text-brandDark mb-2 text-base uppercase font-title">Inteligencia Artificial</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed font-light">
+                        Incorporamos herramientas de vanguardia para acelerar tu fluidez, optimizar el vocabulario técnico y afinar tu pensamiento crítico en el idioma.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         4. FOCOS DE ACCIÓN Y FORMATOS
+         ========================================== -->
+    <section id="formatos" class="py-20 bg-white border-y border-slate-200/50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Focos de Acción -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <h2 class="text-base text-brandBlue font-bold tracking-wider uppercase">Soluciones Estratégicas</h2>
+                        <h3 class="font-title text-3xl font-bold text-brandDark uppercase">Potenciá tu carrera en cualquier etapa</h3>
+                    </div>
+                    <p class="text-base text-slate-600 leading-relaxed font-light">
+                        Acompaño tu crecimiento desde nivel cero hasta el pulido ejecutivo avanzado. Mi enfoque garantiza que cada minuto de clase tenga una aplicación directa en tu vida profesional.
+                    </p>
+                    <ul class="space-y-3 text-xs text-brandDark font-medium">
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-brandBlue"></i> Entrevistas laborales y Headhunting.</li>
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-brandBlue"></i> Pitches, reuniones y presentaciones.</li>
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-brandBlue"></i> Remoción de bloqueos y fluidez verbal.</li>
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-brandBlue"></i> Exámenes internacionales (Cambridge, IELTS, TOEFL).</li>
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-check text-brandBlue"></i> Inglés para relocalización y negocios.</li>
+                    </ul>
+                </div>
+
+                <!-- Formatos de Trabajo -->
+                <div class="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-xl p-8 shadow-sm">
+                    <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Formatos de Trabajo Flexibles</h4>
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-lg border border-slate-100 bg-white flex justify-between items-center">
+                            <div>
+                                <h5 class="text-sm font-bold text-brandDark uppercase font-title">Sesiones de Foco Único</h5>
+                                <p class="text-sm text-slate-500 mt-0.5">Módulos de 45 min para necesidades inmediatas (un pitch o entrevista).</p>
+                            </div>
+                            <span class="text-xs font-bold bg-blue-50 text-brandBlue px-2 py-1 rounded text-center">ALTO IMPACTO</span>
+                        </div>
+                        <div class="p-4 rounded-lg border border-slate-100 bg-white flex justify-between items-center">
+                            <div>
+                                <h5 class="text-sm font-bold text-brandDark uppercase font-title">Cursos Intensivos</h5>
+                                <p class="text-sm text-slate-500 mt-0.5">Programas cerrados (1 a 3 meses) para aceleración ante cambios de rol.</p>
+                            </div>
+                            <span class="text-xs font-bold bg-amber-50 text-amber-600 px-2 py-1 rounded text-center">1 A 3 MESES</span>
+                        </div>
+                        <div class="p-4 rounded-lg border border-slate-100 bg-white flex justify-between items-center">
+                            <div>
+                                <h5 class="text-sm font-bold text-brandDark uppercase font-title">Bono Mensual Recurrente</h5>
+                                <p class="text-sm text-slate-500 mt-0.5">Continuidad fija para asegurar tu espacio en agenda mes a mes.</p>
+                            </div>
+                            <span class="text-xs font-bold bg-emerald-50 text-emerald-600 px-2 py-1 rounded text-center">CONTINUIDAD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+        <section id="metodo" class="py-20 bg-slate-50 border-y border-slate-200/50">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+                    <h2 class="text-base text-brandBlue font-bold tracking-wider uppercase">El camino</h2>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-brandDark uppercase font-title">Tu ruta de aprendizaje en 4 pasos</h3>
+                    <div class="w-16 h-1 bg-brandBlue mx-auto rounded"></div>
+                </div>
+
+                <div class="relative border-l-2 border-slate-200 pl-8 ml-4 space-y-12">
+                    
+                    <div class="relative">
+                        <span class="absolute -left-[45px] top-0 w-7 h-7 rounded-full bg-brandBlue border-4 border-white shadow-sm"></span>
+                        <span class="text-sm font-bold text-brandBlue uppercase tracking-widest">Paso 1</span>
+                        <h4 class="text-lg font-bold text-brandDark uppercase font-title mt-0.5">La Reserva en la Web</h4>
+                        <p class="text-base text-slate-600 mt-2 font-light">Elegí el día y el horario que mejor se adapten a tu disponibilidad a través de nuestro calendario integrado.</p>
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute -left-[47px] top-0 w-7 h-7 rounded-full bg-brandBlue border-4 border-white shadow-sm"></span>
+                        <span class="text-sm font-bold text-brandBlue uppercase tracking-widest">Paso 2 · 20 Minutos sin costo</span>
+                        <h4 class="text-lg font-bold text-brandDark uppercase font-title mt-0.5">Entrevista Inicial de Diagnóstico</h4>
+                        <p class="text-base text-slate-600 mt-2 font-light">Reunión de consultoría estratégica virtual para auditar con exactitud tu nivel actual, identificar bloqueos latentes y fijar metas.</p>
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute -left-[47px] top-0 w-7 h-7 rounded-full bg-brandBlue border-4 border-white shadow-sm"></span>
+                        <span class="text-sm font-bold text-brandBlue uppercase tracking-widest">Paso 3 · Propuesta exclusiva</span>
+                        <h4 class="text-lg font-bold text-brandDark uppercase font-title mt-0.5">Co-Diseño del Plan</h4>
+                        <p class="text-base text-slate-600 mt-2 font-light">Recibís una propuesta temática a medida de tu puesto o sector con una cotización clara y objetivos estructurados a corto y largo plazo.</p>
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute -left-[47px] top-0 w-7 h-7 rounded-full bg-brandBlue border-4 border-white shadow-sm"></span>
+                        <span class="text-sm font-bold text-brandBlue uppercase tracking-widest">Paso 4 · Google Meet</span>
+                        <h4 class="text-lg font-bold text-brandDark uppercase font-title mt-0.5">Sesiones Activas de Consultoría (45 min)</h4>
+                        <p class="text-base text-slate-600 mt-2 font-light">Comenzamos los encuentros individuales dinámicos utilizando directamente el material personalizado e interactivo co-diseñado para tu impacto diario.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- ==========================================
+             4. BIOGRAFÍA DE LA COACH (BIO)
+             ========================================== -->
+        <section id="bio" class="py-20 bg-white overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                    <div class="lg:col-span-5 relative flex justify-center">
+                        <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-[400px] lg:h-[400px]">
+                            <div class="absolute inset-0 rounded-full border-4 border-dashed border-brandBlue/30 animate-[spin_40s_linear_infinite]"></div>
+                            <div class="absolute inset-4 rounded-full overflow-hidden border-4 border-brandBlue shadow-2xl bg-slate-50">
+                                <img src="./img/2.jpeg" alt="Rosana De Luca Retrato" class="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="absolute bottom-4 right-4 bg-white border border-slate-200 shadow-lg px-4 py-2.5 rounded-lg flex items-center gap-2">
+                                <i class="fa-solid fa-certificate text-brandBlue text-lg"></i>
+                                <span class="text-xs font-bold text-brandDark tracking-wider uppercase font-title leading-tight">Doctora en Educación</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 space-y-6">
+                        <h2 class="text-base text-brandBlue font-bold tracking-wider uppercase">Sobre mí</h2>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold text-brandDark uppercase font-title">Rosana De Luca</h3>
+                        <div class="w-16 h-1 bg-brandBlue rounded"></div>
+                        
+                        <div class="space-y-4 text-slate-600 font-light leading-relaxed">
+                            <p class="text-lg font-medium text-brandDark">
+                                El objetivo final no es solo hablar inglés, sino utilizarlo como una herramienta para crecer profesionalmente, conectar con personas de distintas culturas y seguir aprendiendo durante toda la vida.
+                            </p>
+                            <p>
+                                Cada programa es completamente personalizado. No trabajo con cursos estandarizados ni contenidos genéricos: diseño cada proceso de aprendizaje según la profesión, los objetivos, los intereses y los desafíos reales de cada persona.
+                            </p>
+                            <p>
+                                Mi enfoque es integral. No se trata solamente de enseñar inglés, sino de desarrollar la capacidad de comunicarse con claridad, comprender diferentes contextos culturales y ganar confianza para desenvolverse en situaciones reales.
+                            </p>
+                            <p>
+                                La gramática y el estudio sistemático de la lengua ocupan el lugar suficiente para construir una base sólida, pero siempre al servicio de la comunicación. La prioridad es desarrollar fluidez, pensamiento crítico y la capacidad de interactuar de manera natural y efectiva.
+                            </p>
+                        </div>
+
+                        <div class="pt-6 border-t border-slate-100 flex flex-wrap gap-4 items-center">
+                            <span class="text-xs font-semibold text-brandGray uppercase tracking-widest mr-2">Especialidades:</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-medium">Autonomous Learning Systems (ALS) </span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-medium">Business English</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-medium">Executive Communication</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-medium">Learning Design</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-medium">Teacher Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             5. TESTIMONIOS (QUOTES)
+             ========================================== -->
+        <section id="testimonios" class="py-20 bg-slate-900 text-white wireframe-bg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                    <h2 class="text-base text-brandBlue font-bold tracking-wider uppercase">Testimonios</h2>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-white uppercase font-title">Lo Que Dicen Los que se Entrenaron Conmigo</h3>
+                    <div class="w-16 h-1 bg-brandBlue mx-auto rounded"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- Testimonio 1 -->
+                    <div class="bg-slate-800/60 backdrop-blur border border-slate-700/50 rounded-xl p-8 lg:p-10 relative flex flex-col justify-between">
+                        <span class="absolute top-6 right-8 text-6xl text-brandBlue/10 font-serif pointer-events-none">“</span>
+                        <div class="space-y-6">
+                            <div class="flex text-yellow-500 gap-1 text-sm">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <blockquote class="text-lg text-slate-300 font-light italic leading-relaxed">
+                                "La optimización en la fluidez del inglés para negociaciones transformó de inmediato la confianza de nuestro equipo técnico al presentar propuestas complejas ante la junta directiva global en Chicago."
+                            </blockquote>
+                        </div>
+                        <div class="pt-6 border-t border-slate-700/50 mt-6 flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-full bg-brandBlue/20 border border-brandBlue/40 flex items-center justify-center text-brandBlue font-bold text-sm uppercase">
+                                JZ
+                            </div>
+                            <div>
+                                <cite class="block font-semibold text-white not-italic text-sm uppercase font-title tracking-wider">Javier Zepeda</cite>
+                                <span class="text-xs text-brandGray">Director de Desarrollo de Talento &amp; HR</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonio 2 -->
+                    <div class="bg-slate-800/60 backdrop-blur border border-slate-700/50 rounded-xl p-8 lg:p-10 relative flex flex-col justify-between">
+                        <span class="absolute top-6 right-8 text-6xl text-brandBlue/10 font-serif pointer-events-none">“</span>
+                        <div class="space-y-6">
+                            <div class="flex text-yellow-500 gap-1 text-sm">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <blockquote class="text-lg text-slate-300 font-light italic leading-relaxed">
+                                "Trabajar con Rosana fue un cambio drástico. Pasé de dudar en llamadas telefónicas críticas de finanzas a liderar de manera proactiva comités globales. Su enfoque estratégico no tiene comparación en el mercado."
+                            </blockquote>
+                        </div>
+                        <div class="pt-6 border-t border-slate-700/50 mt-6 flex items-center gap-4">
+                            <div class="w-11 h-11 rounded-full bg-brandBlue/20 border border-brandBlue/40 flex items-center justify-center text-brandBlue font-bold text-sm uppercase">
+                                MR
+                            </div>
+                            <div>
+                                <cite class="block font-semibold text-white not-italic text-sm uppercase font-title tracking-wider">Marina Riestra</cite>
+                                <span class="text-xs text-brandGray">VP de Finanzas Internacionales</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+     6. NUEVO CENTRO DE RESERVA Y PAGOS (DIAGNÓSTICO)
+     ========================================== -->
+<section id="reservas" class="py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+            <h2 class="text-base text-brandBlue font-bold tracking-wider uppercase">Inversión &amp; Comodidad</h2>
+            <h3 class="text-3xl sm:text-4xl font-extrabold text-brandDark uppercase font-title">Entrevista Inicial de Diagnóstico</h3>
+            <div class="w-16 h-1 bg-brandBlue mx-auto rounded"></div>
+            <p class="text-slate-600 font-light">
+                Comencemos con una consultoría estratégica de 20 minutos. En esta sesión auditaremos tu nivel, identificaremos bloqueos y definiremos el <b>plan a medida</b> para tus objetivos.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+            <!-- Info del Diagnóstico (Col 5) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <div class="bg-white rounded-xl border-2 border-brandBlue p-8 shadow-md">
+                    <h4 class="text-lg font-bold text-brandDark uppercase font-title tracking-wider mb-4">Tu Punto de Partida</h4>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-brandBlue mt-1"></i> Auditoría de nivel lingüístico actual.</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-brandBlue mt-1"></i> Identificación de necesidades para tu rol profesional.</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-brandBlue mt-1"></i> Definición de objetivos a corto y largo plazo.</li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-brandBlue mt-1"></i> Propuesta de material personalizado.</li>
+                    </ul>
+                    <div class="mt-8 pt-6 border-t border-slate-100">
+                        <!-- <span class="text-3xl font-extrabold text-brandDark font-title">Sin costo</span>
+                        <p class="text-xs text-brandGray mt-1">20 minutos de consultoría estratégica</p> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Agenda (Col 7) -->
+            <!-- Panel de Agenda (Col 7) -->
+<div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-lg p-6 sm:p-8">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+        <div>
+            <span class="text-[10px] uppercase font-bold text-brandBlue tracking-widest block mb-1">Agenda tu espacio</span>
+            <h4 class="text-xl font-bold text-brandDark uppercase font-title">Selección de Horario</h4>
+        </div>
+    </div>
+
+    <div class="w-full bg-slate-50 border border-slate-200 rounded-lg p-6 text-center">
+        <i class="fa-solid fa-calendar-days text-brandBlue text-4xl mb-4"></i>
+        <h5 class="font-bold text-brandDark mb-2">Integración de Agenda</h5>
+
+        <!-- EL BOTÓN AHORA TIENE LOS ATRIBUTOS NECESARIOS -->
+        <button 
+            data-cal-link="christian-vega-m0iqgo/entrevista-de-diagnostco"
+            data-cal-namespace="entrevista-de-diagnostco"
+            data-cal-config='{"layout":"month_view","theme":"auto"}'
+            class="bg-brandBlue text-white px-8 py-3 rounded font-bold uppercase font-title text-sm hover:bg-blue-600 transition-all cursor-pointer">
+            Reservar mi entrevista
+        </button>
+    </div>
+</div>
+
+<!-- SCRIPT -->
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "entrevista-de-diagnostco", {origin:"https://app.cal.com"});
+  Cal.ns["entrevista-de-diagnostco"]("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#2d41b0"},"dark":{"cal-brand":"#fafafa"}},"hideEventTypeDetails":false,"layout":"month_view"});
+</script>
+        </div>
+    </div>
+</section>
+
+        <!-- ==========================================
+             7. INTERACTIVE FAQ ACCORDION
+             ========================================== -->
+        <section class="py-20 bg-white border-t border-slate-100">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+                    <h2 class="text-base text-brandBlue font-bold tracking-wider uppercase">Preguntas Frecuentes</h2>
+                    <h3 class="text-3xl font-extrabold text-brandDark uppercase font-title">Resolvemos tus Dudas</h3>
+                    <div class="w-16 h-1 bg-brandBlue mx-auto rounded"></div>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- FAQ 1 -->
+                    <div class="border border-slate-200 rounded-lg bg-slate-50/50 overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFaq(1)" class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <span class="font-bold text-brandDark uppercase font-title tracking-wide text-sm sm:text-base">¿Necesito tener un nivel avanzado para empezar?</span>
+                            <span id="faq-icon-1" class="text-brandBlue font-bold transition-transform duration-300"><i class="fa-solid fa-plus"></i></span>
+                        </button>
+                        <div id="faq-content-1" class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed font-light">
+                            En absoluto. Recibo y acompaño a profesionales desde el nivel de principiante absoluto (cero). Diseñamos las bases de la comunicación desde el primer escalón.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="border border-slate-200 rounded-lg bg-slate-50/50 overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFaq(2)" class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <span class="font-bold text-brandDark uppercase font-title tracking-wide text-sm sm:text-base">¿Qué plataforma utilizamos para los encuentros?</span>
+                            <span id="faq-icon-2" class="text-brandBlue font-bold transition-transform duration-300"><i class="fa-solid fa-plus"></i></span>
+                        </button>
+                        <div id="faq-content-2" class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed font-light">
+                            Todas nuestras sesiones individuales de 45 minutos se dictan de forma exclusiva y en tiempo real a través de la plataforma Google Meet.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="border border-slate-200 rounded-lg bg-slate-50/50 overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFaq(3)" class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <span class="font-bold text-brandDark uppercase font-title tracking-wide text-sm sm:text-base">¿Cuál es la política de cancelación o reprogramación?</span>
+                            <span id="faq-icon-3" class="text-brandBlue font-bold transition-transform duration-300"><i class="fa-solid fa-plus"></i></span>
+                        </button>
+                        <div id="faq-content-3" class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed font-light">
+                           Para garantizar la total disponibilidad de tus espacios fijos, el formato mensual se abona por adelantado. Debido a la alta demanda corporativa, las clases canceladas por el alumno no se recuperan.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="border border-slate-200 rounded-lg bg-slate-50/50 overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFaq(4)" class="w-full flex items-center justify-between p-6 text-left focus:outline-none">
+                            <span class="font-bold text-brandDark uppercase font-title tracking-wide text-sm sm:text-base">¿Se asignan tareas o material complementario?</span>
+                            <span id="faq-icon-4" class="text-brandBlue font-bold transition-transform duration-300"><i class="fa-solid fa-plus"></i></span>
+                        </button>
+                        <div id="faq-content-4" class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed font-light">
+                           Sí, siempre que lo desees y sea compatible con tus tiempos. Puedes solicitar material de práctica complementaria adaptado a tus prioridades de agenda para acelerar tu proceso fuera de las sesiones.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             8. FORMULARIO DE CONTACTO (CONTACTO)
+             ========================================== -->
+        <section id="contacto" class="py-20 bg-slate-50 border-t border-slate-200/60">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    
+                    <div class="lg:col-span-5 space-y-6">
+                        <h2 class="text-base text-brandBlue font-bold tracking-wider uppercase">Iniciemos hoy</h2>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold text-brandDark uppercase font-title">¿Listo Para Elevar Tu Comunicación?</h3>
+                        <div class="w-16 h-1 bg-brandBlue rounded"></div>
+                        <p class="text-slate-500 font-light leading-relaxed">
+                            Completa el formulario de contacto para coordinar una reunión de diagnóstico inicial de 20 minutos libre de costo.
+                        </p>
+
+                        <div class="space-y-4 pt-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-50 text-brandBlue flex items-center justify-center">
+                                    <i class="fa-solid fa-brands fa-whatsapp"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-brandGray font-semibold tracking-wider uppercase font-title">Whatsapp</span>
+                                    <a href="https://wa.me/5491161476387" class="text-sm font-semibold hover:text-brandBlue transition-colors">11 6147 6387</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-50 text-brandBlue flex items-center justify-center">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-brandGray font-semibold tracking-wider uppercase font-title">Correo Corporativo</span>
+                                    <a href="mailto:delucarosana@gmail.com" class="text-sm font-semibold hover:text-brandBlue transition-colors">delucarosana@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-50 text-brandBlue flex items-center justify-center">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-brandGray font-semibold tracking-wider uppercase font-title">LinkedIn</span>
+                                    <a href="https://www.linkedin.com/in/rosana-de-luca-/" class="text-sm font-semibold hover:text-brandBlue transition-colors">Rosana De Luca</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-50 text-brandBlue flex items-center justify-center">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-brandGray font-semibold tracking-wider uppercase font-title">Instagram</span>
+                                    <a href="https://www.instagram.com/rosanadeluca.english_business/" class="text-sm font-semibold hover:text-brandBlue transition-colors">@rosanadeluca.english_business/</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white border border-slate-200/80 rounded-xl p-8 shadow-md">
+                        <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-title">Nombre Completo *</label>
+                                    <input type="text" required placeholder="Ej. Carlos Mendoza" class="w-full px-4 py-3 rounded-md border border-slate-200 focus:outline-none focus:border-brandBlue transition-colors text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-title">Correo Corporativo *</label>
+                                    <input type="email" required placeholder="Ej. carlos@tuempresa.com" class="w-full px-4 py-3 rounded-md border border-slate-200 focus:outline-none focus:border-brandBlue transition-colors text-sm">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-title">Nombre de la Empresa</label>
+                                    <input type="text" placeholder="Ej. Global Tech" class="w-full px-4 py-3 rounded-md border border-slate-200 focus:outline-none focus:border-brandBlue transition-colors text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-title">Tamaño de Equipo</label>
+                                    <select class="w-full px-4 py-3 rounded-md border border-slate-200 focus:outline-none focus:border-brandBlue transition-colors text-sm bg-white text-slate-600">
+                                        <option value="1">Solo yo (Clase Individual)</option>
+                                        <option value="2-5">Grupo Pequeño (2-5 personas)</option>
+                                        <option value="6+">Departamento Completo (+6 personas)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-title">Objetivos de Aprendizaje *</label>
+                                <textarea rows="4" required placeholder="Por favor detalla brevemente tus objetivos: negociaciones, pitches de venta, fluidez técnica, etc." class="w-full px-4 py-3 rounded-md border border-slate-200 focus:outline-none focus:border-brandBlue transition-colors text-sm"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full inline-flex items-center justify-center px-6 py-4 bg-brandBlue hover:bg-blue-600 text-white font-bold tracking-wider rounded-md transition-colors uppercase font-title">
+                                Enviar Solicitud de Diagnóstico <i class="fa-solid fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================
+         9. FOOTER
+         ========================================== -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-slate-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-slate-800">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 text-white">
+                        <div class="w-8 h-8 border-2 border-brandBlue rounded-full rounded-br-none flex items-center justify-center text-brandBlue font-bold text-sm">
+                            <i class="fa-regular fa-comments"></i>
+                        </div>
+                        <span class="text-lg font-bold uppercase tracking-wider font-title">Rosana De Luca</span>
+                    </div>
+                    <p class="text-xs font-light leading-relaxed max-w-sm">
+                        Servicios profesionales de Coaching de Inglés Corporativo y Comercial. Soluciones a medida para acelerar el desarrollo del lenguaje corporativo.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <h5 class="text-white font-bold uppercase font-title text-sm tracking-widest">Navegación</h5>
+                    <ul class="space-y-2 text-xs font-light">
+                        <li><a href="#metodo" class="hover:text-white transition-colors">El Método</a></li>
+                        <li><a href="#bio" class="hover:text-white transition-colors">Sobre la Coach</a></li>
+                        <li><a href="#reservas" class="hover:text-white transition-colors">Planes &amp; Reservas</a></li>
+                        <li><a href="#contacto" class="hover:text-white transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h5 class="text-white font-bold uppercase font-title text-sm tracking-widest">Seguridad</h5>
+                    <p class="text-xs font-light leading-relaxed">
+                        Todas las reservas procesadas a través de este portal se realizan bajo el protocolo seguro HTTPS y la pasarela verificada de PayPal.
+                    </p>
+                    <div class="flex gap-3 text-2xl text-slate-600">
+                        <i class="fa-brands fa-cc-paypal hover:text-white transition-colors"></i>
+                        <i class="fa-brands fa-cc-visa hover:text-white transition-colors"></i>
+                        <i class="fa-brands fa-cc-mastercard hover:text-white transition-colors"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between pt-8 text-[11px] font-light">
+                <p>&copy; 2026 Rosana De Luca - Business English Coach. Todos los derechos reservados.</p>
+                <div class="flex gap-4 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-white">Aviso de Privacidad</a>
+                    <span>|</span>
+                    <a href="#" class="hover:text-white">Términos y Condiciones</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         SECCIÓN JAVASCRIPT (Equivalente a script.js)
+         ========================================== -->
+    <script>
+        
+        // 1. Menú Móvil Desplegable
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.classList.replace('fa-xmark', 'fa-bars');
+            } else {
+                menuIcon.classList.replace('fa-bars', 'fa-xmark');
+            }
+        });
+
+        // Cerrar menú móvil al hacer clic en enlaces
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        // 2. Acordeón de FAQs Interactivo
+        function toggleFaq(index) {
+            const content = document.getElementById(`faq-content-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            
+            // Cerrar todos los demás faq
+            for(let i = 1; i <= 3; i++) {
+                if(i !== index) {
+                    const c = document.getElementById(`faq-content-${i}`);
+                    const ic = document.getElementById(`faq-icon-${i}`);
+                    if(c && !c.classList.contains('hidden')) {
+                        c.classList.add('hidden');
+                        ic.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                    }
+                }
+            }
+
+            // Alternar actual
+            if(content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.innerHTML = '<i class="fa-solid fa-minus"></i>';
+            } else {
+                content.classList.add('hidden');
+                icon.innerHTML = '<i class="fa-solid fa-plus"></i>';
+            }
+        }
+
+
+        // 3. Selección Dinámica de Planes
+        let activePlan = 'ejecutivo';
+        let activePlanPrice = '$380 USD';
+        let activePlanTitle = 'Plan Ejecutivo';
+
+        function selectPlan(plan) {
+            const cardEjecutivo = document.getElementById('card-plan-ejecutivo');
+            const cardEquipo = document.getElementById('card-plan-equipo');
+            const checkEjecutivo = document.getElementById('check-ejecutivo');
+            const checkEquipo = document.getElementById('check-equipo');
+            const displayTitle = document.getElementById('selected-plan-title');
+            const displayPrice = document.getElementById('selected-plan-price');
+
+            if (plan === 'ejecutivo') {
+                activePlan = 'ejecutivo';
+                activePlanPrice = '$380 USD';
+                activePlanTitle = 'Plan Ejecutivo';
+
+                // Clases visuales de selección
+                cardEjecutivo.className = "bg-white rounded-xl border-2 border-brandBlue p-8 shadow-md hover:shadow-xl transition-all cursor-pointer relative";
+                cardEquipo.className = "bg-white rounded-xl border border-slate-200 p-8 shadow-sm hover:shadow-xl transition-all cursor-pointer relative";
+                
+                checkEjecutivo.classList.remove('hidden');
+                checkEquipo.classList.add('hidden');
+            } else {
+                activePlan = 'equipo';
+                activePlanPrice = '$1,200 USD';
+                activePlanTitle = 'Plan Equipo Técnico';
+
+                cardEquipo.className = "bg-white rounded-xl border-2 border-brandBlue p-8 shadow-md hover:shadow-xl transition-all cursor-pointer relative";
+                cardEjecutivo.className = "bg-white rounded-xl border border-slate-200 p-8 shadow-sm hover:shadow-xl transition-all cursor-pointer relative";
+                
+                checkEquipo.classList.remove('hidden');
+                checkEjecutivo.classList.add('hidden');
+            }
+
+            // Actualizar textos en la terminal de checkout
+            displayTitle.textContent = `${activePlanTitle} Seleccionado`;
+            displayPrice.textContent = activePlanPrice;
+        }
+
+        // 4. Selector de Método de Pago Híbrido (Stripe vs Mercado Pago)
+        let activePaymentMethod = 'stripe';
+
+        function switchPaymentMethod(method) {
+            const stripeFlow = document.getElementById('stripe-flow');
+            const mpFlow = document.getElementById('mp-flow');
+            const btnStripe = document.getElementById('btn-pay-stripe');
+            const btnMP = document.getElementById('btn-pay-mp');
+
+            activePaymentMethod = method;
+
+            if (method === 'stripe') {
+                stripeFlow.classList.remove('hidden');
+                stripeFlow.classList.add('block');
+                mpFlow.classList.remove('block');
+                mpFlow.classList.add('hidden');
+
+                // Estilos botones
+                btnStripe.className = "flex items-center justify-center gap-2 py-3 px-4 text-xs font-bold rounded-md border-2 border-brandBlue text-brandBlue bg-blue-50/50 transition-all focus:outline-none";
+                btnMP.className = "flex items-center justify-center gap-2 py-3 px-4 text-xs font-bold rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all focus:outline-none";
+            } else {
+                mpFlow.classList.remove('hidden');
+                mpFlow.classList.add('block');
+                stripeFlow.classList.remove('block');
+                stripeFlow.classList.add('hidden');
+
+                // Estilos botones
+                btnMP.className = "flex items-center justify-center gap-2 py-3 px-4 text-xs font-bold rounded-md border-2 border-mpBlue text-mpBlue bg-sky-50/50 transition-all focus:outline-none";
+                btnStripe.className = "flex items-center justify-center gap-2 py-3 px-4 text-xs font-bold rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all focus:outline-none";
+            }
+        }
+
+        // 5. Simulación de Interacciones del Calendario Stripe
+        let selectedDate = null;
+        let selectedTime = null;
+
+        function selectDate(element, dateStr) {
+            // Deseleccionar días anteriores
+            const days = document.querySelectorAll('.calendar-day');
+            days.forEach(d => d.classList.remove('selected'));
+
+            // Seleccionar día actual
+            element.classList.add('selected');
+            selectedDate = dateStr;
+
+            // Mostrar franjas horarias correspondientes
+            const timeSlots = document.getElementById('stripe-time-slots');
+            const dateSpan = document.getElementById('selected-stripe-date');
+            
+            dateSpan.textContent = dateStr;
+            timeSlots.classList.remove('hidden');
+        }
+
+        function selectTime(timeStr) {
+            selectedTime = timeStr;
+        }
+
+        // 6. Sistema de Notificaciones Toast (No invasiva, reemplaza el alert())
+        function showNotification(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 right-6 z-50 p-4 rounded-lg shadow-2xl text-white text-xs leading-relaxed max-w-sm transition-all duration-300 transform translate-y-2 opacity-0 font-sans`;
+            
+            if (type === 'success') {
+                toast.style.backgroundColor = '#146EE6'; // Azul de marca
+            } else {
+                toast.style.backgroundColor = '#009ee3'; // Celeste Mercado Pago
+            }
+
+            toast.innerHTML = `<div class="flex items-start gap-2.5">
+                <i class="fa-solid fa-circle-check mt-0.5 text-sm"></i>
+                <div>${message}</div>
+            </div>`;
+
+            document.body.appendChild(toast);
+
+            // Trigger animación de entrada
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+
+            // Desvanecer y remover
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 6000);
+        }
+
+        // 7. Simulación de Pago Exitoso
+        function triggerSimulatedPayment(platform) {
+            if (platform === 'Stripe') {
+                if (!selectedDate || !selectedTime) {
+                    showNotification('Por favor, selecciona una fecha y horario en el calendario de Stripe antes de agendar.', 'error');
+                    return;
+                }
+                showNotification(`<strong>¡Reserva Exitosa en ${platform}!</strong><br>Adquiriste el ${activePlanTitle} ($${activePlanPrice.replace(' USD', '')}). Tu clase de diagnóstico quedó agendada para el <strong>${selectedDate} a las ${selectedTime}</strong>. Se ha enviado una invitación formal de Zoom a tu correo electrónico.`, 'success');
+            } else {
+                showNotification(`<strong>¡Simulación de Transacción Iniciada!</strong><br>Has elegido pagar el ${activePlanTitle} mediante Mercado Pago. Estás siendo redirigido de forma simulada a la pasarela local de cuotas. Tras acreditarse el pago, volverás aquí para agendar tu fecha.`, 'local');
+            }
+        }
+
+        // 8. Envío de Formulario de Consulta Tradicional
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('contact-name').value;
+            showNotification(`¡Muchas gracias, <strong>${nameInput}</strong>! Tu consulta sobre capacitación ha sido enviada con éxito. Rosana De Luca se comunicará contigo en las próximas 24 horas laborables.`, 'success');
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
